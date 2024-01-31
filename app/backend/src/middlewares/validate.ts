@@ -8,7 +8,13 @@ export default class Validations {
       return res.status(400).json({ message: 'All fields must be filled' });
     }
 
-    if (password.length < 6 || /^[a-z0-9.]+@[a-z0-9]+\.[a-z]+\.([a-z]+)?$/i.test(email)) {
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+
+    if (!emailRegex.test(email)) {
+      return res.status(401).json({ message: 'Invalid email or password' });
+    }
+
+    if (password.length < 6) {
       return res.status(401).json({ message: 'Invalid email or password' });
     }
 

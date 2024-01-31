@@ -1,14 +1,15 @@
 import * as bcrypt from 'bcryptjs';
 import * as jwt from 'jsonwebtoken';
 import { ServiceResponse } from '../Interfaces/serviceResponse';
-import IUserModel from '../model/userModel';
+// import IUserModel from '../Interfaces/user/userModel';
+import UserModel from '../model/userModel';
 
 type LoginResp = { token: string };
 
 export default class UsersService {
-  private userModel: IUserModel;
+  private userModel: UserModel;
 
-  constructor(userModel: IUserModel = new IUserModel()) {
+  constructor(userModel: UserModel = new UserModel()) {
     this.userModel = userModel;
   }
 
@@ -19,7 +20,7 @@ export default class UsersService {
       return { status: 'UNAUTHORIZED', data: { message: 'Invalid email or password' } };
     }
 
-    const isPasswordValid = await bcrypt.compare(password, user.password);
+    const isPasswordValid = bcrypt.compareSync(password, user.password);
 
     if (!isPasswordValid) {
       return { status: 'UNAUTHORIZED', data: { message: 'Invalid email or password' } };
