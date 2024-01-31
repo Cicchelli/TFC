@@ -1,7 +1,8 @@
 import { App } from '../app';
 import * as sinon from 'sinon';
 import * as chai from 'chai';
-import chaiHttp from 'chai-http';
+// @ts-ignore
+import chaiHttp = require('chai-http');
 import SequelizeTeam from '../database/models/teamsModel';
 import { team, teams } from './mocks/TMock';
 
@@ -36,3 +37,4 @@ describe('Teams Test', () => {
     expect(body).to.deep.equal({ message: 'Team not found' });
   });
 });
+

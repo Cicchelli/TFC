@@ -1,4 +1,4 @@
-const team = {id: 2, teamName: 'Bahia'};
+const team = {id: 3, teamName: 'Botafogo'};
 const teams = [team];
 
 export {
