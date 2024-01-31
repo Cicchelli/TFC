@@ -1,15 +1,9 @@
 import { JwtPayload, Secret, sign, verify } from 'jsonwebtoken';
 
-type PayloadType = {
-  sub: number;
-  email: string;
-  role: string;
-};
-
 export default class JWT {
   private static secret: Secret = process.env.JWT_SECRET || '';
 
-  static sign(payload: PayloadType, expires: string): string {
+  static sign(payload: JwtPayload, expires: string): string {
     return sign({ ...payload }, this.secret, { expiresIn: expires });
   }
 

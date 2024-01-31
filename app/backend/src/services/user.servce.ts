@@ -5,6 +5,7 @@ import { ServiceResponse } from '../Interfaces/serviceResponse';
 import UserModel from '../model/userModel';
 
 type LoginResp = { token: string };
+type Payload = { sub: number, role: string, email: string, iat?: number, exp?: number };
 
 export default class UsersService {
   private userModel: UserModel;
@@ -26,7 +27,8 @@ export default class UsersService {
       return { status: 'UNAUTHORIZED', data: { message: 'Invalid email or password' } };
     }
 
-    const payload = { sub: Number(user.id), role: user.role, email: user.email };
+    // const payload = { sub: Number(user.id), role: user.role, email: user.email };
+    const payload: Payload = { sub: Number(user.id), role: user.role, email: user.email };
     const secret = process.env.JWT_SECRET || '';
     const token = jwt.sign(payload, secret, { expiresIn: '7d' });
 
