@@ -31,6 +31,7 @@ SequelizeUsers.init(
     username: {
       type: DataTypes.STRING,
       allowNull: false,
+      field: 'username',
     },
     role: {
       type: DataTypes.STRING,

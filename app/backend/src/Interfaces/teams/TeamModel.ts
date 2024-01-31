@@ -1,4 +1,6 @@
 import { CRUDModelReader } from '../CRUD';
 import { ITeam } from './Team';
 
-export type ITeamModel = CRUDModelReader<ITeam>;
+export interface ITeamModel extends CRUDModelReader<ITeam> {
+  findById(id: number): Promise<ITeam | null>,
+}
