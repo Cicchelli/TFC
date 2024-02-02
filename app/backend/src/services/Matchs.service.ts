@@ -16,4 +16,19 @@ export default class MatchsService {
     const matchsFiltred = await this.matchModel.findMatchsFiltred(query);
     return { status: 'SUCCESSFUL', data: matchsFiltred };
   }
+
+  async updateProgress(id:number): Promise<ServiceResponse<{ message: 'Finished' }>> {
+    try {
+      await this.matchModel.patchInprogress(id);
+      return { status: 'SUCCESSFUL', data: { message: 'Finished' } };
+    } catch (error) {
+      throw new Error('Team not found');
+    }
+  }
+
+  async updateScore(homeTeamGoals:
+  number, awayTeamGoals: number, id: number): Promise<ServiceResponse<{ message:'ok' }>> {
+    await this.matchModel.updateScore(homeTeamGoals, awayTeamGoals, id);
+    return { status: 'SUCCESSFUL', data: { message: 'ok' } };
+  }
 }

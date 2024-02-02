@@ -3,7 +3,6 @@ import SequelizeMatches from '../database/models/matchModel';
 import SequelizeTeam from '../database/models/teamsModel';
 
 export default class MatchModel {
-  [x: string]: any;
   private matchsModel = SequelizeMatches;
 
   async findAll(): Promise<IMatch[]> {
@@ -29,5 +28,21 @@ export default class MatchModel {
       attributes: { exclude: ['home_team_id', 'away_team_id'] },
     });
     return teams;
+  }
+
+  async patchInprogress(id: number): Promise<void> {
+    try {
+      await this.matchsModel.update({ inProgress: false }, { where: { id } });
+    } catch (error) {
+      throw new Error('Match not found');
+    }
+  }
+
+  async updateScore(homeTeamGoals: number, awayTeamGoals: number, id: number): Promise<void> {
+    try {
+      await this.matchsModel.update({ homeTeamGoals, awayTeamGoals }, { where: { id } });
+    } catch (error) {
+      throw new Error('Match not found');
+    }
   }
 }
