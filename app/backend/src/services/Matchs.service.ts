@@ -1,10 +1,15 @@
 import { ServiceResponse } from '../Interfaces/serviceResponse';
 import { IMatch } from '../Interfaces/matches/IMatch';
 import MatchModel from '../model/MatchModel';
+import TeamService from './team.service';
+import { MatchInfos } from '../Interfaces/matches/MInfo';
 
 export default class MatchsService {
   [x: string]: any;
-  constructor(private matchModel = new MatchModel()) {}
+  constructor(
+    private matchModel = new MatchModel(),
+    private teamService = new TeamService(),
+  ) {}
 
   async getAllMatchs(): Promise<ServiceResponse<IMatch[]>> {
     const matchs = await this.matchModel.findAll();
@@ -30,5 +35,25 @@ export default class MatchsService {
   number, awayTeamGoals: number, id: number): Promise<ServiceResponse<{ message:'ok' }>> {
     await this.matchModel.updateScore(homeTeamGoals, awayTeamGoals, id);
     return { status: 'SUCCESSFUL', data: { message: 'ok' } };
+  }
+
+  async create(matchInfos: MatchInfos): Promise<ServiceResponse<IMatch>> {
+    const { homeTeamId, awayTeamId } = matchInfos;
+
+    const [teamExist1, teamExist2] = await Promise.all([
+      this.teamService.getById(Number(homeTeamId)),
+      this.teamService.getById(Number(awayTeamId)),
+    ]);
+
+    if (teamExist1.status === 'NOT_FOUND' || teamExist2.status === 'NOT_FOUND') {
+      return {
+        status: 'NOT_FOUND',
+        data: { message: 'There is no team with such id!' },
+      };
+    }
+
+    const createdMatch = await this.matchModel.create(matchInfos);
+
+    return { status: 'CREATED', data: createdMatch };
   }
 }
