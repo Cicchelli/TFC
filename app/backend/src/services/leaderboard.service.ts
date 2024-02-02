@@ -6,8 +6,11 @@ import {
   totalDrawsHome,
   totalGamesHome,
   totalLosesHome,
+  goalsBalanceHome,
   totalPointsHome,
+  efficiencyHome,
   totalVictoriesHome,
+  sortTeams,
 } from '../utils/leaderboard';
 
 export default class LeaderboardService {
@@ -19,21 +22,22 @@ export default class LeaderboardService {
   async getAllLeaderHome() {
     const teams = await this.teamModel.findAll();
     const matches = await this.matchModel.findMatchsFiltred('false');
-    const homeMatches = teams.map((team: { teamName: any; id: number }) => {
-      const {
-        id, teamName,
-      } = team;
-      return {
-        name: teamName,
-        totalPoints: totalPointsHome(id, matches),
-        totalGames: totalGamesHome(id, matches),
-        totalVictories: totalVictoriesHome(id, matches),
-        totalDraws: totalDrawsHome(id, matches),
-        totalLosses: totalLosesHome(id, matches),
-        goalsFavor: goalsFavorHome(id, matches),
-        goalsOwn: goalsOwnHome(id, matches),
-      };
-    });
+
+    const homeMatches = teams.map((team) => ({
+      name: team.teamName,
+      totalPoints: totalPointsHome(team.id, matches),
+      totalGames: totalGamesHome(team.id, matches),
+      totalVictories: totalVictoriesHome(team.id, matches),
+      totalDraws: totalDrawsHome(team.id, matches),
+      totalLosses: totalLosesHome(team.id, matches),
+      goalsFavor: goalsFavorHome(team.id, matches),
+      goalsOwn: goalsOwnHome(team.id, matches),
+      goalsBalance: goalsBalanceHome(team.id, matches),
+      efficiency: efficiencyHome(team.id, matches),
+    }));
+
+    sortTeams(homeMatches);
+
     return { status: 'SUCCESSFUL', data: homeMatches };
   }
 }
