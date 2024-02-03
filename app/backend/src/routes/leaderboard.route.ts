@@ -8,5 +8,9 @@ leaderRoutes.get(
   '/home',
   (req: Request, res: Response) => leaderboardController.getAllHome(req, res),
 );
+leaderRoutes.get(
+  '/away',
+  (req:Request, res:Response) => leaderboardController.getAllAway(req, res),
+);
 
 export default leaderRoutes;

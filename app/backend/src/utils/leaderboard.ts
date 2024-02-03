@@ -71,6 +71,19 @@ const sortTeams = (team: LeaderboardType[]): LeaderboardType[] =>
   team.sort((a, b) => b.totalPoints - a.totalPoints || b.goalsBalance
   - a.goalsBalance || b.goalsFavor - a.goalsFavor);
 
+const goalsBalanceAway = (teamId: number, matches: IMatch[]): number => {
+  const goalsFavor = goalsFavorAway(teamId, matches);
+  const goalsOwn = goalsOwnAway(teamId, matches);
+  return goalsFavor - goalsOwn;
+};
+
+const efficiencyAway = (teamId: number, matches: IMatch[]): string => {
+  const points = totalPointsAway(teamId, matches);
+  const games = totalGamesAway(teamId, matches);
+  const efficiency = ((points / (games * 3)) * 100).toFixed(2);
+  return efficiency;
+};
+
 export {
   totalGamesHome,
   totalGamesAway,
@@ -89,4 +102,6 @@ export {
   goalsBalanceHome,
   efficiencyHome,
   sortTeams,
+  efficiencyAway,
+  goalsBalanceAway,
 };
