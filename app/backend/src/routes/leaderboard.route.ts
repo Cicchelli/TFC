@@ -13,4 +13,9 @@ leaderRoutes.get(
   (req:Request, res:Response) => leaderboardController.getAllAway(req, res),
 );
 
+leaderRoutes.get(
+  '/',
+  (req: Request, res: Response) => leaderboardController.getAll(req, res),
+);
+
 export default leaderRoutes;

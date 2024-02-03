@@ -84,6 +84,21 @@ const efficiencyAway = (teamId: number, matches: IMatch[]): string => {
   return efficiency;
 };
 
+const totalPointsAll = (teamId: number, matches: IMatch[]): number => {
+  const draws = (totalDrawsAway(teamId, matches) + totalDrawsHome(teamId, matches)) * 1;
+  const totalVictories = (totalVictoriesHome(teamId, matches)
+   + totalVictoriesAway(teamId, matches)) * 3;
+  const totalPoints = draws + totalVictories;
+  return totalPoints;
+};
+
+const efficiencyTotal = (teamId: number, matches: IMatch[]): string => {
+  const totalPoints = totalPointsAway(teamId, matches) + totalPointsHome(teamId, matches);
+  const totalGames = totalGamesAway(teamId, matches) + totalGamesHome(teamId, matches);
+  const efficiency = ((totalPoints / (totalGames * 3)) * 100).toFixed(2);
+  return efficiency;
+};
+
 export {
   totalGamesHome,
   totalGamesAway,
@@ -104,4 +119,6 @@ export {
   sortTeams,
   efficiencyAway,
   goalsBalanceAway,
+  efficiencyTotal,
+  totalPointsAll,
 };
