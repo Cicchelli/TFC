@@ -89,6 +89,7 @@ export default class LeaderboardService {
       efficiency: efficiencyTotal(team.id, matches),
     }));
     sortTeams(allMatches);
+
     return { status: 'SUCCESSFUL', data: allMatches };
   }
 }
