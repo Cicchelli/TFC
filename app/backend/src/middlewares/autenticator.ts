@@ -12,7 +12,7 @@ export default class AuthMiddleware {
     const token = tokenHeader.split(' ')[1];
 
     try {
-      const secret = process.env.JWT_SECRET || '';
+      const secret = process.env.JWT_SECRET || 'jwt_secret';
       const payload = jwt.verify(token, secret) as unknown;
       console.log(payload);
       res.locals.auth = payload;
